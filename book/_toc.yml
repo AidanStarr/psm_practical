@@ -12,7 +12,7 @@ parts:
 
   - caption: Practical
     chapters:
-    - file: 02_PSM_practical_1
+    - file: 02_practical_worksheet_1.ipynb
     - file: 03_OPTIONAL_practical_2
  
   - caption: Additional Reading
