@@ -32,6 +32,8 @@ html:
   use_issues_button: true
   use_repository_button: true
 
+launch_buttons:
+  binderhub_url: "https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/AidanStarr/psm_practical"
 parse:
   myst_enable_extensions:
     - amsmath

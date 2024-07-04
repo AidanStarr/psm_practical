@@ -6,4 +6,4 @@ Created for the University of Cambridge Holocene Climates MPhil (2024/2025 cohor
 ## Outline
 WORK IN PROGRESS!!
 
-- I'm for this workshop to be a JupyterBook, with a Binder deployment for students to run the code and try the practical without having to deal with python dependencies on their local machines. 
+- I'm planning for this workshop to be a JupyterBook, with a Binder deployment for students to run the code and try the practical without having to deal with python dependencies on their local machines. 
