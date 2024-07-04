@@ -1,0 +1,22 @@
+
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+
+parts:
+  - caption: Theory
+    chapters:
+    - file: 01_psm_intro
+
+  - caption: Practical
+    chapters:
+    - file: 02_PSM_practical_1
+    - file: 03_OPTIONAL_practical_2
+ 
+  - caption: Additional Reading
+    chapters:
+    - file: PSM_examples
+    - file: python_primer
+
