@@ -18,5 +18,5 @@ parts:
   - caption: Additional Reading
     chapters:
     - file: PSM_examples
-    - file: python_primer
+    - file: python-env-primer
 

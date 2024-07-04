@@ -57,6 +57,8 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '01_psm_intro';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -235,7 +237,7 @@
       
       
       
-      <li><a href="https://mybinder.org/v2/gh/AidanStarr/psm_practical/HEAD/v2/gh/AidanStarr/psm_practical/master?urlpath=tree/book/01_psm_intro.ipynb" target="_blank"
+      <li><a href="https://mybinder.org/v2/gh/AidanStarr/psm_practical/HEAD/v2/gh/AidanStarr/psm_practical/main?urlpath=tree/book/01_psm_intro.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Binder"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -384,7 +386,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -400,6 +404,14 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proxy-system-models-psms">Proxy System Models (PSMs)</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -411,7 +423,8 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="introduction-to-proxy-system-models-psms">
 <h1>Introduction to Proxy System Models (PSMs)<a class="headerlink" href="#introduction-to-proxy-system-models-psms" title="Link to this heading">#</a></h1>
-<p>Paleoclimate observations are the only empirical constraint we have on what the climate system was like prior to the ~19th century. However, paleoclimate proxies are often riddled with uncertainties, both in the way they record a given climate signal and in the age of a given sample. Understanding and modelling the way that a proxy system <strong>transforms a climate signal into a measurable geological/biological/chemical/physical property</strong> is therefore very useful for robustly interpreting paleoclimate records.</p>
+<p>Paleoclimate observations are the only empirical constraint we have on what the climate system was like prior to the ~19th century. However, paleoclimate proxies are often riddled with uncertainties, both in the way they record a given climate signal and in the age of a given sample.</p>
+<p>Understanding and modelling the way that a proxy system <strong>transforms a climate signal into a measurable geological/biological/chemical/physical property</strong> is clearly super useful for robustly interpreting paleoclimate records!</p>
 <p>(<a class="reference external" href="https://sos.noaa.gov/catalog/datasets/paleoclimate-proxies/">https://sos.noaa.gov/catalog/datasets/paleoclimate-proxies/</a>)</p>
 <figure class="align-default" id="proxy-timescales">
 <a class="reference internal image-reference" href="_images/proxy_span_resolution_graph.jpg"><img alt="_images/proxy_span_resolution_graph.jpg" src="_images/proxy_span_resolution_graph.jpg" style="width: 250px;" /></a>
@@ -419,6 +432,21 @@ document.write(`
 <p><span class="caption-number">Fig. 1 </span><span class="caption-text">Typical timescales covered by various paleoclimate proxy archives.</span><a class="headerlink" href="#proxy-timescales" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
+<section id="proxy-system-models-psms">
+<h2>Proxy System Models (PSMs)<a class="headerlink" href="#proxy-system-models-psms" title="Link to this heading">#</a></h2>
+<p>To convert a paleoclimate measurement (let’s say, <a class="reference external" href="https://www.nature.com/articles/s43017-022-00294-9">the Mg/Ca ratio of a foraminifera</a> shell) into a climate variable (in this case, ocean temperature), we first need some kind of transfer function. Traditionally, this might be a regression model determined by my measuring the proxy value (e.g. Mg/Ca concentration) from samples where we know the variable of choice.</p>
+<p>Continuing our Mg/Ca example, we could go out into the ocean and collect living formanifera specimens from different regions with varying Sea Surface Temperatures (SST). We can then plot the temperature versus Mg/Ca concentration for all the specimens and use the relationship to obtain a <strong>calibration equation</strong>. For example, we could use the data in <a class="reference internal" href="#anand-mgca-calibration"><span class="std std-numref">Fig. 2</span></a> to derive the following equation:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-86915aed-de6d-4d83-85f7-ba12b0028c60">
+<span class="eqno">(1)<a class="headerlink" href="#equation-86915aed-de6d-4d83-85f7-ba12b0028c60" title="Permalink to this equation">#</a></span>\[\begin{align}
+Mg/Ca = 0.38*exp(0.09T)
+\end{align}\]</div>
+<figure class="align-default" id="anand-mgca-calibration">
+<a class="reference internal image-reference" href="_images/anand_mgca_calibration.jpg"><img alt="_images/anand_mgca_calibration.jpg" src="_images/anand_mgca_calibration.jpg" style="width: 250px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Calibration for converting Mg/Ca concentration (mmol/mol) to temperature (ºC) by <a class="reference external" href="https://doi.org/10.1029/2002PA000846">Anand et al., 2003</a>. The different symbols represent different foraminifera species. Anand et al., collected these samples from 6 years of sediment traps in the North Atlantic.</span><a class="headerlink" href="#anand-mgca-calibration" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -466,6 +494,21 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#proxy-system-models-psms">Proxy System Models (PSMs)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
