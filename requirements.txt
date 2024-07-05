@@ -3,3 +3,4 @@ matplotlib
 xarray
 pandas
 jupyter-book
+cartopy

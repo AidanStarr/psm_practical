@@ -23,7 +23,9 @@ html:
   use_repository_button: true
 
 launch_buttons:
-  binderhub_url: "https://mybinder.org/v2/gh/AidanStarr/psm_practical/HEAD"
+  binderhub_url: "https://mybinder.org"
+  colab_url: "https://colab.research.google.com"
+
 parse:
   myst_enable_extensions:
     - amsmath

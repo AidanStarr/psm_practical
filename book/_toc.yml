@@ -12,8 +12,9 @@ parts:
 
   - caption: Practical
     chapters:
-    - file: 02_practical_worksheet_1.ipynb
-    - file: 03_OPTIONAL_practical_2
+    - file: 02_practical1_infosheet.ipynb
+    - file: 03_practical1_worksheet.ipynb
+    - file: 04_OPTIONAL_practical_2
  
   - caption: Additional Reading
     chapters:

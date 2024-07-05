@@ -59,10 +59,10 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '02_practical_worksheet_1';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '02_practical1_infosheet';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Python environment primer" href="python-env-primer.html" />
+    <link rel="next" title="Practical 1 \(\delta^{18}O\) worksheet" href="03_practical1_worksheet.html" />
     <link rel="prev" title="Introduction to Proxy System Models (PSMs)" href="01_psm_intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -188,6 +188,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Practical</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">PSM Worksheet 1: <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> of foraminifera</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_practical1_worksheet.html">Practical 1 <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> worksheet</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Additional Reading</span></p>
 <ul class="nav bd-sidenav">
@@ -246,7 +247,7 @@
       
       
       
-      <li><a href="https://mybinder.org/v2/gh/AidanStarr/psm_practical/main?urlpath=tree/book/02_practical_worksheet_1.ipynb" target="_blank"
+      <li><a href="https://mybinder.org/v2/gh/AidanStarr/psm_practical/main?urlpath=tree/book/02_practical1_infosheet.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Binder"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -258,6 +259,24 @@
     <img alt="Binder logo" src="_static/images/logo_binder.svg">
   </span>
 <span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/AidanStarr/psm_practical/blob/main/book/02_practical1_infosheet.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
 </a>
 </li>
       
@@ -294,7 +313,7 @@
       
       
       
-      <li><a href="https://github.com/AidanStarr/psm_practical/issues/new?title=Issue%20on%20page%20%2F02_practical_worksheet_1.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/AidanStarr/psm_practical/issues/new?title=Issue%20on%20page%20%2F02_practical1_infosheet.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -324,7 +343,7 @@
       
       
       
-      <li><a href="_sources/02_practical_worksheet_1.ipynb" target="_blank"
+      <li><a href="_sources/02_practical1_infosheet.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -422,6 +441,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-delta-18-o-of-foraminifera">The <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> of foraminifera</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-1">Task 1.</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-psm">Building the PSM</a></li>
 </ul>
             </nav>
@@ -436,29 +456,40 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="psm-worksheet-1-delta-18-o-of-foraminifera">
 <h1>PSM Worksheet 1: <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> of foraminifera<a class="headerlink" href="#psm-worksheet-1-delta-18-o-of-foraminifera" title="Link to this heading">#</a></h1>
-<p>In this worksheet, we’ll build a simple forward model for the oxygen isotope composition of planktic foraminifera in the ocean.</p>
+<p>In this worksheet, we’ll build a simple forward model for the oxygen isotope composition of planktic foraminifera in the ocean. This model will be a <strong>forward model</strong>, meaning it predicts <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span> from temperature and <span class="math notranslate nohighlight">\(\delta^{18}O_{seawater}\)</span>.</p>
+<p>We’re going to run this model for modern ocean data to give <strong>pseudo-proxy</strong> <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span> values for a given foram species, and then compare the output to real “core-top” <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> data.</p>
 <section id="background">
 <h2>Background<a class="headerlink" href="#background" title="Link to this heading">#</a></h2>
-<p><em>This practical is adapted from the work of <a class="reference external" href="https://doi.org/10.1029/1999PA900025">Schmidt, G.A., 1999</a></em></p>
+<p><em>This practical is adapted from the work of <a class="reference external" href="https://doi.org/10.1029/1999PA900025">Schmidt, G.A., 1999</a></em> and inspired by the work of []</p>
 <section id="the-delta-18-o-of-foraminifera">
 <h3>The <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> of foraminifera<a class="headerlink" href="#the-delta-18-o-of-foraminifera" title="Link to this heading">#</a></h3>
 <p>The oxygen isotope composition of the calcite shells of foraminfera (<span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span>) is potentially the most important proxy in paleoceanography. Early measurements of <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span> on planktic foraminifera samples in deep-sea sediment cores gave us our first insight into the rythmic glacial cycles of the Pleistocene <a class="reference internal" href="#"><span class="xref myst">Emiliani et al., 1955</span></a>, revealing periodic fluctiations in ocean temperature and global ice volume.</p>
 <p><span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span> is a function of the **ambient <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> of seawater (<span class="math notranslate nohighlight">\(\delta^{18}O_{sw}\)</span>) and the water temperature in which the foraminfera formed its shell. The relationship between <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span>, Temperature (T) and <span class="math notranslate nohighlight">\(\delta^{18}O_{sw}\)</span> is often simplified as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-081c3207-ba5e-4a73-ba34-dd35f33e45c9">
-<span class="eqno">(3)<a class="headerlink" href="#equation-081c3207-ba5e-4a73-ba34-dd35f33e45c9" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-5f379961-0e02-4e97-b97a-ab9e3bd1ca2e">
+<span class="eqno">(3)<a class="headerlink" href="#equation-5f379961-0e02-4e97-b97a-ab9e3bd1ca2e" title="Permalink to this equation">#</a></span>\[\begin{align}
 \delta^{18}O_{calcite} = \alpha + \beta * T + (\delta^{18}O_{sw}-0.27) 
 \end{align}\]</div>
+<p>In this equation, <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> are our coefficients (we can use different coefficients from different studies if we want), and we’re subtracting 0.27 from <span class="math notranslate nohighlight">\(\delta^{18}O_{sw}\)</span> to convert between VMSOW and VPDB (see box below).</p>
 <div class="tip dropdown admonition">
 <p class="admonition-title">Note on delta notation and units</p>
 <h3 class="rubric" id="a-note-on-oxygen-isotope-scales-vsmow-versus-vpdb">A note on oxygen isotope scales: VSMOW versus VPDB</h3>
 <p>Oxygen isotope measurements are usually given in “delta” notation, with units of “per mille” (a.k.a per throusand, denoted by ‰). This is because the absolute abundance of minor isotopes like <span class="math notranslate nohighlight">\(^{18}O\)</span> can’t be measured accurately, so they are instead compared to a known standard material. You can think of this as <em>the difference of this sample from this standard x 1000</em>… or:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6be0bfcb-171b-444b-9d90-07dc69650990">
-<span class="eqno">(4)<a class="headerlink" href="#equation-6be0bfcb-171b-444b-9d90-07dc69650990" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-54326b98-7dfc-42f8-9f24-a5d5cb81d829">
+<span class="eqno">(4)<a class="headerlink" href="#equation-54326b98-7dfc-42f8-9f24-a5d5cb81d829" title="Permalink to this equation">#</a></span>\[\begin{align}
 \delta_{sample} = \frac{R_{sample} - R_{standard}}{R_{standard}} x 1000
 \end{align}\]</div>
 <p>To make life more confusing for MPhil students, oxygen isotopes measured on seawater are usually reported relative to a standard material known as Vienna Standard Mean Ocean Water (VSMOW), while carbonate oxygen isotope isotopes are usually reported relative to a carbonate standard known as Vienna PeeDee Belemnite (VPDB).</p>
 </div>
 </section>
+</section>
+<section id="task-1">
+<h2>Task 1.<a class="headerlink" href="#task-1" title="Link to this heading">#</a></h2>
+<p>For task 1, we’re gonna start easy…</p>
+<p>I want you to:</p>
+<ul class="simple">
+<li><p>go to <a class="reference external" href="https://doi.org/10.5194/cp-19-1265-2023">this paper by Gaskell and Hull, 2023</a> and</p></li>
+<li><p>write a function that</p></li>
+</ul>
 </section>
 <section id="building-the-psm">
 <h2>Building the PSM<a class="headerlink" href="#building-the-psm" title="Link to this heading">#</a></h2>
@@ -510,11 +541,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="python-env-primer.html"
+       href="03_practical1_worksheet.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Python environment primer</p>
+        <p class="prev-next-title">Practical 1 <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> worksheet</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -538,6 +569,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-delta-18-o-of-foraminifera">The <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> of foraminifera</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-1">Task 1.</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-psm">Building the PSM</a></li>
 </ul>
   </nav></div>

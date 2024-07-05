@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '01_psm_intro';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Python environment primer" href="python-env-primer.html" />
+    <link rel="next" title="PSM Worksheet 1: \(\delta^{18}O\) of foraminifera" href="02_practical1_infosheet.html" />
     <link rel="prev" title="Introduction to Proxy System Models" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -185,6 +185,11 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction to Proxy System Models (PSMs)</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Practical</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="02_practical1_infosheet.html">PSM Worksheet 1: <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> of foraminifera</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_practical1_worksheet.html">Practical 1 <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> worksheet</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Additional Reading</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="python-env-primer.html">Python environment primer</a></li>
@@ -242,7 +247,7 @@
       
       
       
-      <li><a href="https://mybinder.org/v2/gh/AidanStarr/psm_practical/HEAD/v2/gh/AidanStarr/psm_practical/main?urlpath=tree/book/01_psm_intro.ipynb" target="_blank"
+      <li><a href="https://mybinder.org/v2/gh/AidanStarr/psm_practical/main?urlpath=tree/book/01_psm_intro.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Binder"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -254,6 +259,24 @@
     <img alt="Binder logo" src="_static/images/logo_binder.svg">
   </span>
 <span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/AidanStarr/psm_practical/blob/main/book/01_psm_intro.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
 </a>
 </li>
       
@@ -445,13 +468,13 @@ document.write(`
 <h2>Calibration Equations<a class="headerlink" href="#calibration-equations" title="Link to this heading">#</a></h2>
 <p>To convert a paleoclimate measurement (let’s say, <a class="reference external" href="https://www.nature.com/articles/s43017-022-00294-9">the Mg/Ca ratio of a foraminifera</a> shell) into a climate variable (in this case, ocean temperature), we first need some kind of transfer function. Traditionally, this might be a regression model determined by my measuring the proxy value (e.g. Mg/Ca concentration) from samples with known environmental conditions (e.g. water temperature).</p>
 <p>Continuing our Mg/Ca example, we could go out into the ocean and collect living formanifera specimens from different regions with varying water temperatures. We could then plot the temperature versus Mg/Ca concentration for all the specimens and use the relationship to obtain a <strong>calibration equation</strong>. For example, we could use the data in <a class="reference internal" href="#anand-mgca-calibration"><span class="std std-numref">Fig. 2</span></a> to derive the following equation:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f3140e0b-b218-46e3-a8ef-c7c96498077a">
-<span class="eqno">(1)<a class="headerlink" href="#equation-f3140e0b-b218-46e3-a8ef-c7c96498077a" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-74eb7532-2353-438c-9063-daddabe44f18">
+<span class="eqno">(1)<a class="headerlink" href="#equation-74eb7532-2353-438c-9063-daddabe44f18" title="Permalink to this equation">#</a></span>\[\begin{align}
 Mg/Ca = 0.38*exp(0.09T)
 \end{align}\]</div>
 <p>Which would rearrange to give us temperature like so:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fe18f891-eca9-4d9a-bd2d-804beccd4ddd">
-<span class="eqno">(2)<a class="headerlink" href="#equation-fe18f891-eca9-4d9a-bd2d-804beccd4ddd" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-8583dec0-d8f9-4a4d-839a-96de7b227b42">
+<span class="eqno">(2)<a class="headerlink" href="#equation-8583dec0-d8f9-4a4d-839a-96de7b227b42" title="Permalink to this equation">#</a></span>\[\begin{align}
 T = \frac{ln(\frac{Mg/Ca}{0.38})}{0.09}
 \end{align}\]</div>
 <figure class="align-default" id="anand-mgca-calibration">
@@ -516,11 +539,11 @@ T = \frac{ln(\frac{Mg/Ca}{0.38})}{0.09}
       </div>
     </a>
     <a class="right-next"
-       href="python-env-primer.html"
+       href="02_practical1_infosheet.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Python environment primer</p>
+        <p class="prev-next-title">PSM Worksheet 1: <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> of foraminifera</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
