@@ -4,3 +4,4 @@ xarray
 pandas
 jupyter-book
 cartopy
+netcdf4

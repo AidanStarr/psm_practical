@@ -2,7 +2,7 @@ name: psm_practical
 channels:
   - conda-forge
 dependencies:
-- python
+- python=3.8
 - matplotlib
 - ipython
 - jupyter
@@ -10,3 +10,4 @@ dependencies:
 - xarray
 - numpy
 - cartopy
+- netcdf4

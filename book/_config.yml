@@ -26,6 +26,9 @@ launch_buttons:
   binderhub_url: "https://mybinder.org"
   colab_url: "https://colab.research.google.com"
 
+execute:
+  execute_notebooks         : "off"  # Whether to execute notebooks at build time. Must be one of ("auto", "force", "cache", "off")
+
 parse:
   myst_enable_extensions:
     - amsmath
