@@ -22,6 +22,8 @@ nbclient.exceptions.CellExecutionError: An error occurred while executing the fo
 import numpy as np # numpy is the cornerstone of coding in python
 import pandas as pd # pandas to work with tables (think excel on steroids)
 import xarray as xr # xarray to work with n-dimensional datasets
+import cartopy.crs as ccrs # cartopy for map projections
+import matplotlib.pyplot as plt # import pyplot from matplotlib for plotting tools
 ------------------
 
 

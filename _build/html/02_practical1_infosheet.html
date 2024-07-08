@@ -439,6 +439,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-delta-18-o-of-foraminifera">The <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> of foraminifera</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calibration-equations">1. Calibration equations</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-1">Task 1.</a></li>
@@ -457,28 +458,80 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="psm-worksheet-1-delta-18-o-of-foraminifera">
 <h1>PSM Worksheet 1: <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> of foraminifera<a class="headerlink" href="#psm-worksheet-1-delta-18-o-of-foraminifera" title="Link to this heading">#</a></h1>
 <p>In this worksheet, we’ll build a simple forward model for the oxygen isotope composition of planktic foraminifera in the ocean. This model will be a <strong>forward model</strong>, meaning it predicts <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span> from temperature and <span class="math notranslate nohighlight">\(\delta^{18}O_{seawater}\)</span>.</p>
-<p>We’re going to run this model for modern ocean data to give <strong>pseudo-proxy</strong> <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span> values for a given foram species, and then compare the output to real “core-top” <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> data.</p>
+<p>We’re going to run this model for modern Atlanic Ocean data to give <strong>pseudo-proxy</strong> <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span> values for a given foram species, and then compare the output to real “core-top” <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> data.</p>
 <section id="background">
 <h2>Background<a class="headerlink" href="#background" title="Link to this heading">#</a></h2>
-<p><em>This practical is adapted from the work of <a class="reference external" href="https://doi.org/10.1029/1999PA900025">Schmidt, G.A., 1999</a></em> and inspired by the work of []</p>
+<p><em>This practical is inspired by the work of <a class="reference external" href="https://doi.org/10.1029/1999PA900025">Schmidt, G.A., 1999</a></em> and <a class="reference external" href="https://doi.org/10.1029/2019PA003576">Malevich et al., 2019</a></p>
 <section id="the-delta-18-o-of-foraminifera">
 <h3>The <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> of foraminifera<a class="headerlink" href="#the-delta-18-o-of-foraminifera" title="Link to this heading">#</a></h3>
 <p>The oxygen isotope composition of the calcite shells of foraminfera (<span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span>) is potentially the most important proxy in paleoceanography. Early measurements of <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span> on planktic foraminifera samples in deep-sea sediment cores gave us our first insight into the rythmic glacial cycles of the Pleistocene <a class="reference internal" href="#"><span class="xref myst">Emiliani et al., 1955</span></a>, revealing periodic fluctiations in ocean temperature and global ice volume.</p>
-<p><span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span> is a function of the **ambient <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> of seawater (<span class="math notranslate nohighlight">\(\delta^{18}O_{sw}\)</span>) and the water temperature in which the foraminfera formed its shell. The relationship between <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span>, Temperature (T) and <span class="math notranslate nohighlight">\(\delta^{18}O_{sw}\)</span> is often simplified as:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5f379961-0e02-4e97-b97a-ab9e3bd1ca2e">
-<span class="eqno">(3)<a class="headerlink" href="#equation-5f379961-0e02-4e97-b97a-ab9e3bd1ca2e" title="Permalink to this equation">#</a></span>\[\begin{align}
-\delta^{18}O_{calcite} = \alpha + \beta * T + (\delta^{18}O_{sw}-0.27) 
+<p><span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span> is a function of the <strong>ambient <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> of seawater (<span class="math notranslate nohighlight">\(\delta^{18}O_{sw}\)</span>)</strong> and the water temperature in which the foraminfera formed its shell. Each species of foraminifera will have distinct seasonal and depth preferences in the ocean. For example, one species might thrive in the upper 50m during July and August, while another might prefer the 100-200m range during April and May.</p>
+<p>To model a foraminifera shells’ <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span>, we need to know the following things:</p>
+<ol class="arabic simple">
+<li><p>The depth range in which the foraminifera grew it’s shell (it’s <strong>depth habitat</strong>).</p></li>
+<li><p>The month/season that the foraminifera grew it’s shell (it’s <strong>seasonal preference</strong>).</p></li>
+<li><p>An equation relating water temperature and <span class="math notranslate nohighlight">\(\delta^{18}O_{sw}\)</span> to <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span>.</p></li>
+</ol>
+<p>With this information, we want our model to <strong>predict <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span> for a given species of planktic foraminifera in the modern ocean</strong>.</p>
+</section>
+<section id="calibration-equations">
+<h3>1. Calibration equations<a class="headerlink" href="#calibration-equations" title="Link to this heading">#</a></h3>
+<p>The relationship between <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span>, Temperature (T) and <span class="math notranslate nohighlight">\(\delta^{18}O_{sw}\)</span> has been estimated from laboratory experiments (synthesizing inorganic calcite in a lab) and foraminifera culturing (growing a foram at a known temperature and d18Osw and then measuring the shell). These equations are usually presented in the form:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6288f7c2-e83c-4f7c-bfad-a79956bc4c2c">
+<span class="eqno">(3)<a class="headerlink" href="#equation-6288f7c2-e83c-4f7c-bfad-a79956bc4c2c" title="Permalink to this equation">#</a></span>\[\begin{align}
+T = a - b(\delta^{18}O_{calcite} - \delta^{18}O_{sw} - 0.27) + c(\delta^{18}O_{calcite} - \delta^{18}O_{sw} - 0.27)^2 
 \end{align}\]</div>
-<p>In this equation, <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> are our coefficients (we can use different coefficients from different studies if we want), and we’re subtracting 0.27 from <span class="math notranslate nohighlight">\(\delta^{18}O_{sw}\)</span> to convert between VMSOW and VPDB (see box below).</p>
+<p>In this equation, a, b, and c are our coefficients (we can use different coefficients from different studies if we want), and we’re subtracting 0.27 from <span class="math notranslate nohighlight">\(\delta^{18}O_{sw}\)</span> to convert between VSMOW and VPDB (see box below).</p>
+<p>Since we want to predict d18Ocalcite, we need to rearange like so:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-92253e69-b93c-41a4-a7ff-934d6a87e5d3">
+<span class="eqno">(4)<a class="headerlink" href="#equation-92253e69-b93c-41a4-a7ff-934d6a87e5d3" title="Permalink to this equation">#</a></span>\[\begin{align}
+\delta^{18}O_{calcite} = \delta^{18}O_{sw} + \frac{b+\sqrt{b**2-4c(a-T)}}{2c}
+\end{align}\]</div>
 <div class="tip dropdown admonition">
 <p class="admonition-title">Note on delta notation and units</p>
 <h3 class="rubric" id="a-note-on-oxygen-isotope-scales-vsmow-versus-vpdb">A note on oxygen isotope scales: VSMOW versus VPDB</h3>
 <p>Oxygen isotope measurements are usually given in “delta” notation, with units of “per mille” (a.k.a per throusand, denoted by ‰). This is because the absolute abundance of minor isotopes like <span class="math notranslate nohighlight">\(^{18}O\)</span> can’t be measured accurately, so they are instead compared to a known standard material. You can think of this as <em>the difference of this sample from this standard x 1000</em>… or:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-54326b98-7dfc-42f8-9f24-a5d5cb81d829">
-<span class="eqno">(4)<a class="headerlink" href="#equation-54326b98-7dfc-42f8-9f24-a5d5cb81d829" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-294ddbaf-cd6a-471f-b29a-7af61f3b8824">
+<span class="eqno">(5)<a class="headerlink" href="#equation-294ddbaf-cd6a-471f-b29a-7af61f3b8824" title="Permalink to this equation">#</a></span>\[\begin{align}
 \delta_{sample} = \frac{R_{sample} - R_{standard}}{R_{standard}} x 1000
 \end{align}\]</div>
 <p>To make life more confusing for MPhil students, oxygen isotopes measured on seawater are usually reported relative to a standard material known as Vienna Standard Mean Ocean Water (VSMOW), while carbonate oxygen isotope isotopes are usually reported relative to a carbonate standard known as Vienna PeeDee Belemnite (VPDB).</p>
+</div>
+<p>For this practical, you should use one of the following sets of coefficients:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>a</p></th>
+<th class="head"><p>b</p></th>
+<th class="head"><p>c</p></th>
+<th class="head"><p>ref</p></th>
+<th class="head"><p>method</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>KO97</p></td>
+<td><p>16.1</p></td>
+<td><p>4.64</p></td>
+<td><p>0.05</p></td>
+<td><p>Kim and O’Neil (1997)</p></td>
+<td><p>Inorganic calcite (lab)</p></td>
+</tr>
+<tr class="row-odd"><td><p>EL83</p></td>
+<td><p>17.0</p></td>
+<td><p>4.52</p></td>
+<td><p>0.03</p></td>
+<td><p>Erez and Luz (1983)</p></td>
+<td><p>Cultured forams</p></td>
+</tr>
+<tr class="row-even"><td><p>M02</p></td>
+<td><p>14.3</p></td>
+<td><p>4.34</p></td>
+<td><p>0.09</p></td>
+<td><p>Mulitza et al., 2002</p></td>
+<td><p>Field calibration</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
 </section>
@@ -567,6 +620,7 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-delta-18-o-of-foraminifera">The <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> of foraminifera</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calibration-equations">1. Calibration equations</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-1">Task 1.</a></li>

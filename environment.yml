@@ -1,0 +1,12 @@
+name: psm_practical
+channels:
+  - conda-forge
+dependencies:
+- python
+- matplotlib
+- ipython
+- jupyter
+- scipy
+- xarray
+- numpy
+- cartopy
