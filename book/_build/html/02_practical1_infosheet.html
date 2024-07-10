@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=87e54e7c" />
   
@@ -240,24 +240,6 @@
     <i class="fas fa-rocket"></i>
   </button>
   <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://mybinder.org/v2/gh/AidanStarr/psm_practical/main?urlpath=tree/book/02_practical1_infosheet.ipynb" target="_blank"
-   class="btn btn-sm dropdown-item"
-   title="Launch on Binder"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  
-    <img alt="Binder logo" src="_static/images/logo_binder.svg">
-  </span>
-<span class="btn__text-container">Binder</span>
-</a>
-</li>
-      
       
       
       
@@ -478,14 +460,14 @@ document.write(`
 <section id="calibration-equations">
 <h3>Calibration equations<a class="headerlink" href="#calibration-equations" title="Link to this heading">#</a></h3>
 <p>The relationship between <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span>, Temperature (T) and <span class="math notranslate nohighlight">\(\delta^{18}O_{sw}\)</span> has been estimated from laboratory experiments (synthesizing inorganic calcite in a lab) and foraminifera culturing (growing a foram at a known temperature and d18Osw and then measuring the shell). These equations are usually presented in the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-eef651db-17a8-4205-909f-e935d8eb2bef">
-<span class="eqno">(3)<a class="headerlink" href="#equation-eef651db-17a8-4205-909f-e935d8eb2bef" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-252217e7-7019-41a2-9596-d0b934933945">
+<span class="eqno">(3)<a class="headerlink" href="#equation-252217e7-7019-41a2-9596-d0b934933945" title="Permalink to this equation">#</a></span>\[\begin{align}
 T = a + b(\delta^{18}O_{calcite} - \delta^{18}O_{sw} - 0.27) + c(\delta^{18}O_{calcite} - \delta^{18}O_{sw} - 0.27)^2 
 \end{align}\]</div>
 <p>In this equation, a, b, and c are our coefficients (we can use different coefficients from different studies if we want), and we’re subtracting 0.27 from <span class="math notranslate nohighlight">\(\delta^{18}O_{sw}\)</span> to convert between VSMOW and VPDB (see box below).</p>
 <p>Since we want to predict d18Ocalcite, we need to rearange like so:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-917007d8-ddf0-4072-89fa-73d8acc2a4ef">
-<span class="eqno">(4)<a class="headerlink" href="#equation-917007d8-ddf0-4072-89fa-73d8acc2a4ef" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-fffc7f8b-0a14-4dae-b0f6-7e49cf595cf7">
+<span class="eqno">(4)<a class="headerlink" href="#equation-fffc7f8b-0a14-4dae-b0f6-7e49cf595cf7" title="Permalink to this equation">#</a></span>\[\begin{align}
 \delta^{18}O_{calcite} = \delta^{18}O_{sw} + \frac{b+\sqrt{b^2-4c(a-T)}}{2c}
 \end{align}\]</div>
 <p>To write this as a python function, I would suggest the following steps:</p>
@@ -498,8 +480,8 @@ T = a + b(\delta^{18}O_{calcite} - \delta^{18}O_{sw} - 0.27) + c(\delta^{18}O_{c
 <p class="admonition-title">Note on delta notation and units</p>
 <h3 class="rubric" id="a-note-on-oxygen-isotope-scales-vsmow-versus-vpdb">A note on oxygen isotope scales: VSMOW versus VPDB</h3>
 <p>Oxygen isotope measurements are usually given in “delta” notation, with units of “per mille” (a.k.a per throusand, denoted by ‰). This is because the absolute abundance of minor isotopes like <span class="math notranslate nohighlight">\(^{18}O\)</span> can’t be measured accurately, so they are instead compared to a known standard material. You can think of this as <em>the difference of this sample from this standard x 1000</em>… or:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0bfde28d-cb3a-4dcd-8191-086158db252e">
-<span class="eqno">(5)<a class="headerlink" href="#equation-0bfde28d-cb3a-4dcd-8191-086158db252e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-55b17525-2d77-4145-87b5-7e86777bd599">
+<span class="eqno">(5)<a class="headerlink" href="#equation-55b17525-2d77-4145-87b5-7e86777bd599" title="Permalink to this equation">#</a></span>\[\begin{align}
 \delta_{sample} = \frac{R_{sample} - R_{standard}}{R_{standard}} x 1000
 \end{align}\]</div>
 <p>To make life more confusing for MPhil students, oxygen isotopes measured on seawater are usually reported relative to a standard material known as Vienna Standard Mean Ocean Water (VSMOW), while carbonate oxygen isotope isotopes are usually reported relative to a carbonate standard known as Vienna PeeDee Belemnite (VPDB).</p>

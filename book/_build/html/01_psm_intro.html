@@ -243,24 +243,6 @@
       
       
       
-      <li><a href="https://mybinder.org/v2/gh/AidanStarr/psm_practical/main?urlpath=tree/book/01_psm_intro.ipynb" target="_blank"
-   class="btn btn-sm dropdown-item"
-   title="Launch on Binder"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  
-    <img alt="Binder logo" src="_static/images/logo_binder.svg">
-  </span>
-<span class="btn__text-container">Binder</span>
-</a>
-</li>
-      
-      
-      
-      
       <li><a href="https://colab.research.google.com/github/AidanStarr/psm_practical/blob/main/book/01_psm_intro.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Colab"
@@ -464,13 +446,13 @@ document.write(`
 <h2>Calibration Equations<a class="headerlink" href="#calibration-equations" title="Link to this heading">#</a></h2>
 <p>To convert a paleoclimate measurement (let’s say, <a class="reference external" href="https://www.nature.com/articles/s43017-022-00294-9">the Mg/Ca ratio of a foraminifera</a> shell) into a climate variable (in this case, ocean temperature), we first need some kind of transfer function. Traditionally, this might be a regression model determined by my measuring the proxy value (e.g. Mg/Ca concentration) from samples with known environmental conditions (e.g. water temperature).</p>
 <p>Continuing our Mg/Ca example, we could go out into the ocean and collect living formanifera specimens from different regions with varying water temperatures. We could then plot the temperature versus Mg/Ca concentration for all the specimens and use the relationship to obtain a <strong>calibration equation</strong>. For example, we could use the data in <a class="reference internal" href="#anand-mgca-calibration"><span class="std std-numref">Fig. 2</span></a> to derive the following equation:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4c9ae35f-53e8-424a-877a-d5a98fc109c6">
-<span class="eqno">(1)<a class="headerlink" href="#equation-4c9ae35f-53e8-424a-877a-d5a98fc109c6" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-9e3b384d-840d-407e-8b8f-127d08c1a80f">
+<span class="eqno">(1)<a class="headerlink" href="#equation-9e3b384d-840d-407e-8b8f-127d08c1a80f" title="Permalink to this equation">#</a></span>\[\begin{align}
 Mg/Ca = 0.38*exp(0.09T)
 \end{align}\]</div>
 <p>Which would rearrange to give us temperature like so:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ac60e0ab-10ab-465e-8ed1-642f93f6e9c9">
-<span class="eqno">(2)<a class="headerlink" href="#equation-ac60e0ab-10ab-465e-8ed1-642f93f6e9c9" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-6e204cda-0b85-4e8e-8e88-e24687f34169">
+<span class="eqno">(2)<a class="headerlink" href="#equation-6e204cda-0b85-4e8e-8e88-e24687f34169" title="Permalink to this equation">#</a></span>\[\begin{align}
 T = \frac{ln(\frac{Mg/Ca}{0.38})}{0.09}
 \end{align}\]</div>
 <figure class="align-default" id="anand-mgca-calibration">
