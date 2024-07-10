@@ -52,7 +52,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js?v=36754332"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -478,14 +478,14 @@ document.write(`
 <section id="calibration-equations">
 <h3>Calibration equations<a class="headerlink" href="#calibration-equations" title="Link to this heading">#</a></h3>
 <p>The relationship between <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span>, Temperature (T) and <span class="math notranslate nohighlight">\(\delta^{18}O_{sw}\)</span> has been estimated from laboratory experiments (synthesizing inorganic calcite in a lab) and foraminifera culturing (growing a foram at a known temperature and d18Osw and then measuring the shell). These equations are usually presented in the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-04ccaffb-fba6-4f6c-adc7-06fed0c19a9b">
-<span class="eqno">(3)<a class="headerlink" href="#equation-04ccaffb-fba6-4f6c-adc7-06fed0c19a9b" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-eef651db-17a8-4205-909f-e935d8eb2bef">
+<span class="eqno">(3)<a class="headerlink" href="#equation-eef651db-17a8-4205-909f-e935d8eb2bef" title="Permalink to this equation">#</a></span>\[\begin{align}
 T = a + b(\delta^{18}O_{calcite} - \delta^{18}O_{sw} - 0.27) + c(\delta^{18}O_{calcite} - \delta^{18}O_{sw} - 0.27)^2 
 \end{align}\]</div>
 <p>In this equation, a, b, and c are our coefficients (we can use different coefficients from different studies if we want), and we’re subtracting 0.27 from <span class="math notranslate nohighlight">\(\delta^{18}O_{sw}\)</span> to convert between VSMOW and VPDB (see box below).</p>
 <p>Since we want to predict d18Ocalcite, we need to rearange like so:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5cde32db-8d92-488b-8c60-df84d9053d18">
-<span class="eqno">(4)<a class="headerlink" href="#equation-5cde32db-8d92-488b-8c60-df84d9053d18" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-917007d8-ddf0-4072-89fa-73d8acc2a4ef">
+<span class="eqno">(4)<a class="headerlink" href="#equation-917007d8-ddf0-4072-89fa-73d8acc2a4ef" title="Permalink to this equation">#</a></span>\[\begin{align}
 \delta^{18}O_{calcite} = \delta^{18}O_{sw} + \frac{b+\sqrt{b^2-4c(a-T)}}{2c}
 \end{align}\]</div>
 <p>To write this as a python function, I would suggest the following steps:</p>
@@ -498,8 +498,8 @@ T = a + b(\delta^{18}O_{calcite} - \delta^{18}O_{sw} - 0.27) + c(\delta^{18}O_{c
 <p class="admonition-title">Note on delta notation and units</p>
 <h3 class="rubric" id="a-note-on-oxygen-isotope-scales-vsmow-versus-vpdb">A note on oxygen isotope scales: VSMOW versus VPDB</h3>
 <p>Oxygen isotope measurements are usually given in “delta” notation, with units of “per mille” (a.k.a per throusand, denoted by ‰). This is because the absolute abundance of minor isotopes like <span class="math notranslate nohighlight">\(^{18}O\)</span> can’t be measured accurately, so they are instead compared to a known standard material. You can think of this as <em>the difference of this sample from this standard x 1000</em>… or:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5aaeb18e-605a-4854-bc15-716b88c73c09">
-<span class="eqno">(5)<a class="headerlink" href="#equation-5aaeb18e-605a-4854-bc15-716b88c73c09" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-0bfde28d-cb3a-4dcd-8191-086158db252e">
+<span class="eqno">(5)<a class="headerlink" href="#equation-0bfde28d-cb3a-4dcd-8191-086158db252e" title="Permalink to this equation">#</a></span>\[\begin{align}
 \delta_{sample} = \frac{R_{sample} - R_{standard}}{R_{standard}} x 1000
 \end{align}\]</div>
 <p>To make life more confusing for MPhil students, oxygen isotopes measured on seawater are usually reported relative to a standard material known as Vienna Standard Mean Ocean Water (VSMOW), while carbonate oxygen isotope isotopes are usually reported relative to a carbonate standard known as Vienna PeeDee Belemnite (VPDB).</p>
@@ -618,22 +618,7 @@ T = a + b(\delta^{18}O_{calcite} - \delta^{18}O_{sw} - 0.27) + c(\delta^{18}O_{c
 <p>This should be all we need to build a simple PSM, whereby we can input a species and a location and return the predicted <span class="math notranslate nohighlight">\(\delta^{18}O_{calcite}\)</span>. Your task now is to create a new function that does exactly this, by calling these individual functions within.</p>
 <div class="tip dropdown admonition">
 <p class="admonition-title">A useful helper function</p>
-<p>You’ll no doubt realise that the <code class="docutils literal notranslate"><span class="pre">sample_data</span></code> requires month as an integer (where 0 = Jan, 1 = Feb, etc.), but the output from <code class="docutils literal notranslate"><span class="pre">find_preference</span></code> is a string (‘Jan’, ‘Feb’, etc.). You may have found a clever way to deal with this, but this helper function might save you some time:</p>
-<p>def monthToNum(shortMonth):
-return {
-‘jan’: 1,
-‘feb’: 2,
-‘mar’: 3,
-‘apr’: 4,
-‘may’: 5,
-‘jun’: 6,
-‘jul’: 7,
-‘aug’: 8,
-‘sep’: 9,
-‘oct’: 10,
-‘nov’: 11,
-‘dec’: 12
-}[shortMonth]</p>
+<p>You’ll no doubt realise that the <code class="docutils literal notranslate"><span class="pre">sample_data</span></code> requires month as an integer (where 1 = Jan, 2 = Feb, etc.), but the output from <code class="docutils literal notranslate"><span class="pre">find_preference</span></code> is a string (‘Jan’, ‘Feb’, etc.). I’ve provided a helpfer function in the worksheet notebook to save you some time.</p>
 </div>
 </section>
 </section>

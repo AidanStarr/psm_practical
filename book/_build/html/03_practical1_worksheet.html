@@ -52,7 +52,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js?v=36754332"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -436,6 +436,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-2-1-load-datasets">Task 2.1: Load datasets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-2-2-write-a-function-that-samples-the-coean-data-at-a-given-latitude-and-longitude">Task 2.2: write a function that samples the coean data at a given latitude and longitude</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-3-foram-ecology">Task 3: Foram ecology</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-4-bringing-it-together">Task 4: Bringing it together!</a></li>
 </ul>
             </nav>
         </div>
@@ -450,12 +451,35 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="practical-1-delta-18-o-worksheet">
 <h1>Practical 1 <span class="math notranslate nohighlight">\(\delta^{18}O\)</span> worksheet<a class="headerlink" href="#practical-1-delta-18-o-worksheet" title="Link to this heading">#</a></h1>
 <p><strong>OPEN THIS NOTEBOOK IN GOOGLE COLAB</strong></p>
+<p>Once you’ve opened it, run the cells below. This will “clone” into the github repository for this practical, giving you access to the data. (NOte, you’ll have to remove the # before running)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="ch">#!git clone https://github.com/AidanStarr/psm_practical.git</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#cd psm_practical/book</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="ch">#!pip install -r ../requirements.txt</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## import modules - don&#39;t change this! </span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> <span class="c1"># numpy is the cornerstone of coding in python</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> <span class="c1"># pandas to work with tables (think excel on steroids)</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span> <span class="c1"># xarray to work with n-dimensional datasets</span>
+<span class="kn">import</span> <span class="nn">cartopy</span> <span class="k">as</span> <span class="nn">cartopy</span> <span class="c1"># cartopy for map projections</span>
 <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span> <span class="c1"># cartopy for map projections</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span> <span class="c1"># import pyplot from matplotlib for plotting tools</span>
 </pre></div>
@@ -501,7 +525,7 @@ document.write(`
 <span class="n">T</span> <span class="o">=</span> <span class="mf">16.1</span>
 <span class="n">d18O_sw</span> <span class="o">=</span> <span class="mf">0.5</span>
 <span class="n">a</span> <span class="o">=</span> <span class="mf">16.1</span>
-<span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.64</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mf">4.64</span>
 <span class="n">c</span> <span class="o">=</span> <span class="mf">0.05</span>
 
 <span class="n">equilibrium_calcite</span><span class="p">(</span><span class="n">d18O_sw</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
@@ -908,27 +932,27 @@ Data variables:
     T        (month, depth, lat, lon) float64 1MB ...
 Attributes:
     description:    gridded climatology from Breitkruez et al., 2018 (https:/...
-    regrid_method:  bilinear</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-493657f1-fb57-4844-a862-3bfead7b0a8a' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-493657f1-fb57-4844-a862-3bfead7b0a8a' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>month</span>: 12</li><li><span class='xr-has-index'>depth</span>: 6</li><li><span class='xr-has-index'>lat</span>: 46</li><li><span class='xr-has-index'>lon</span>: 51</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-4a56f11f-bab9-4690-a219-4b014462cbb3' class='xr-section-summary-in' type='checkbox'  checked><label for='section-4a56f11f-bab9-4690-a219-4b014462cbb3' class='xr-section-summary' >Coordinates: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>month</span></div><div class='xr-var-dims'>(month)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1 2 3 4 5 6 7 8 9 10 11 12</div><input id='attrs-2631ea68-9c6b-4434-8c87-697d1fda9d2d' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-2631ea68-9c6b-4434-8c87-697d1fda9d2d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-3a0a57ca-a99b-4f7d-82fc-f8d0aa2103a1' class='xr-var-data-in' type='checkbox'><label for='data-3a0a57ca-a99b-4f7d-82fc-f8d0aa2103a1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>depth</span></div><div class='xr-var-dims'>(depth)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>25.0 85.0 170.0 290.0 455.0 670.0</div><input id='attrs-10396551-66be-4e63-9119-cb7a97144c30' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-10396551-66be-4e63-9119-cb7a97144c30' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-6375c633-2e71-4347-b08a-51854289bbfb' class='xr-var-data-in' type='checkbox'><label for='data-6375c633-2e71-4347-b08a-51854289bbfb' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([ 25.,  85., 170., 290., 455., 670.])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>lat</span></div><div class='xr-var-dims'>(lat)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-35.0 -32.5 -30.0 ... 75.0 77.5</div><input id='attrs-8945430a-21b8-4f0e-8b7f-c7dc9757b1a1' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-8945430a-21b8-4f0e-8b7f-c7dc9757b1a1' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c1bcecfb-3580-4cd2-be2f-8a773424b873' class='xr-var-data-in' type='checkbox'><label for='data-c1bcecfb-3580-4cd2-be2f-8a773424b873' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_north</dd></dl></div><div class='xr-var-data'><pre>array([-35. , -32.5, -30. , -27.5, -25. , -22.5, -20. , -17.5, -15. , -12.5,
+    regrid_method:  bilinear</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-020013b9-a53c-4caf-a745-567080319ba1' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-020013b9-a53c-4caf-a745-567080319ba1' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>month</span>: 12</li><li><span class='xr-has-index'>depth</span>: 6</li><li><span class='xr-has-index'>lat</span>: 46</li><li><span class='xr-has-index'>lon</span>: 51</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-d1a328d2-65b6-4e71-b9a9-3353d193af28' class='xr-section-summary-in' type='checkbox'  checked><label for='section-d1a328d2-65b6-4e71-b9a9-3353d193af28' class='xr-section-summary' >Coordinates: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>month</span></div><div class='xr-var-dims'>(month)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1 2 3 4 5 6 7 8 9 10 11 12</div><input id='attrs-a5b88998-6aac-4e19-b142-16c9bcfe43da' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-a5b88998-6aac-4e19-b142-16c9bcfe43da' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-be333d64-82a2-4e9f-b7bc-766919952698' class='xr-var-data-in' type='checkbox'><label for='data-be333d64-82a2-4e9f-b7bc-766919952698' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>depth</span></div><div class='xr-var-dims'>(depth)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>25.0 85.0 170.0 290.0 455.0 670.0</div><input id='attrs-b7bd75d9-7174-497e-8f39-ac37666f4070' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-b7bd75d9-7174-497e-8f39-ac37666f4070' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-a9cbcce3-c26e-405e-80d0-44d352aef36c' class='xr-var-data-in' type='checkbox'><label for='data-a9cbcce3-c26e-405e-80d0-44d352aef36c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([ 25.,  85., 170., 290., 455., 670.])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>lat</span></div><div class='xr-var-dims'>(lat)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-35.0 -32.5 -30.0 ... 75.0 77.5</div><input id='attrs-7538b485-3cc2-4d48-8b96-da467f09d9b5' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-7538b485-3cc2-4d48-8b96-da467f09d9b5' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-669502da-df0d-4018-b122-74124d2c9c49' class='xr-var-data-in' type='checkbox'><label for='data-669502da-df0d-4018-b122-74124d2c9c49' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_north</dd></dl></div><div class='xr-var-data'><pre>array([-35. , -32.5, -30. , -27.5, -25. , -22.5, -20. , -17.5, -15. , -12.5,
        -10. ,  -7.5,  -5. ,  -2.5,   0. ,   2.5,   5. ,   7.5,  10. ,  12.5,
         15. ,  17.5,  20. ,  22.5,  25. ,  27.5,  30. ,  32.5,  35. ,  37.5,
         40. ,  42.5,  45. ,  47.5,  50. ,  52.5,  55. ,  57.5,  60. ,  62.5,
-        65. ,  67.5,  70. ,  72.5,  75. ,  77.5])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>lon</span></div><div class='xr-var-dims'>(lon)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-90.0 -87.5 -85.0 ... 32.5 35.0</div><input id='attrs-efe7077d-4fde-4373-8965-8baa242670aa' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-efe7077d-4fde-4373-8965-8baa242670aa' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-12c95648-5a43-4aff-9448-2b26e044b34f' class='xr-var-data-in' type='checkbox'><label for='data-12c95648-5a43-4aff-9448-2b26e044b34f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_east</dd></dl></div><div class='xr-var-data'><pre>array([-90. , -87.5, -85. , -82.5, -80. , -77.5, -75. , -72.5, -70. , -67.5,
+        65. ,  67.5,  70. ,  72.5,  75. ,  77.5])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>lon</span></div><div class='xr-var-dims'>(lon)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-90.0 -87.5 -85.0 ... 32.5 35.0</div><input id='attrs-394d9ba1-518f-40a0-8f22-97137babe181' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-394d9ba1-518f-40a0-8f22-97137babe181' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d8959a75-2c0a-481b-9fda-5c8041a84f1a' class='xr-var-data-in' type='checkbox'><label for='data-d8959a75-2c0a-481b-9fda-5c8041a84f1a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_east</dd></dl></div><div class='xr-var-data'><pre>array([-90. , -87.5, -85. , -82.5, -80. , -77.5, -75. , -72.5, -70. , -67.5,
        -65. , -62.5, -60. , -57.5, -55. , -52.5, -50. , -47.5, -45. , -42.5,
        -40. , -37.5, -35. , -32.5, -30. , -27.5, -25. , -22.5, -20. , -17.5,
        -15. , -12.5, -10. ,  -7.5,  -5. ,  -2.5,   0. ,   2.5,   5. ,   7.5,
         10. ,  12.5,  15. ,  17.5,  20. ,  22.5,  25. ,  27.5,  30. ,  32.5,
-        35. ])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-cbc724f1-0064-43cc-9f9e-99067df113cc' class='xr-section-summary-in' type='checkbox'  checked><label for='section-cbc724f1-0064-43cc-9f9e-99067df113cc' class='xr-section-summary' >Data variables: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>d18Osw</span></div><div class='xr-var-dims'>(month, depth, lat, lon)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-f6d7c1ee-7cbe-4cdd-a060-923e8ef365e3' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-f6d7c1ee-7cbe-4cdd-a060-923e8ef365e3' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-6e68a77f-3109-4e75-9cbd-de73906607b6' class='xr-var-data-in' type='checkbox'><label for='data-6e68a77f-3109-4e75-9cbd-de73906607b6' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>Permille VSMOW</dd><dt><span>desciption :</span></dt><dd>Gridded seawater d18O (1950-1980 climatology)</dd></dl></div><div class='xr-var-data'><pre>[168912 values with dtype=float64]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>T</span></div><div class='xr-var-dims'>(month, depth, lat, lon)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-99427271-9b3a-4330-a3fd-d3993792a979' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-99427271-9b3a-4330-a3fd-d3993792a979' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7cd6e1c4-4cf8-479b-900b-3d6d1017b5f1' class='xr-var-data-in' type='checkbox'><label for='data-7cd6e1c4-4cf8-479b-900b-3d6d1017b5f1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>deg C</dd><dt><span>desciption :</span></dt><dd>Gridded seawater temperature (1950-1980 climatology)</dd></dl></div><div class='xr-var-data'><pre>[168912 values with dtype=float64]</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-911ee279-97c5-44e7-98e4-69c40fd70e25' class='xr-section-summary-in' type='checkbox'  ><label for='section-911ee279-97c5-44e7-98e4-69c40fd70e25' class='xr-section-summary' >Indexes: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>month</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-bbd009a4-f6cc-4696-a7d3-e998d60684a3' class='xr-index-data-in' type='checkbox'/><label for='index-bbd009a4-f6cc-4696-a7d3-e998d60684a3' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], dtype=&#x27;int64&#x27;, name=&#x27;month&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>depth</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-68de3c9f-ad74-4986-ae77-bef486d71c4a' class='xr-index-data-in' type='checkbox'/><label for='index-68de3c9f-ad74-4986-ae77-bef486d71c4a' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([25.0, 85.0, 170.0, 290.0, 455.0, 670.0], dtype=&#x27;float64&#x27;, name=&#x27;depth&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>lat</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-722bbb08-b6c7-4791-8d1d-3bf8da725358' class='xr-index-data-in' type='checkbox'/><label for='index-722bbb08-b6c7-4791-8d1d-3bf8da725358' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([-35.0, -32.5, -30.0, -27.5, -25.0, -22.5, -20.0, -17.5, -15.0, -12.5,
+        35. ])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-86f42160-83d1-425c-bd9d-6450ef7f0223' class='xr-section-summary-in' type='checkbox'  checked><label for='section-86f42160-83d1-425c-bd9d-6450ef7f0223' class='xr-section-summary' >Data variables: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>d18Osw</span></div><div class='xr-var-dims'>(month, depth, lat, lon)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-5f2556ec-acb8-4f34-a7e4-818c34cee68a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-5f2556ec-acb8-4f34-a7e4-818c34cee68a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-4a0218b2-66a5-489f-9a8e-de192a86f62b' class='xr-var-data-in' type='checkbox'><label for='data-4a0218b2-66a5-489f-9a8e-de192a86f62b' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>Permille VSMOW</dd><dt><span>desciption :</span></dt><dd>Gridded seawater d18O (1950-1980 climatology)</dd></dl></div><div class='xr-var-data'><pre>[168912 values with dtype=float64]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>T</span></div><div class='xr-var-dims'>(month, depth, lat, lon)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-5b234937-9fac-4170-94b8-0a1d7f1690ce' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-5b234937-9fac-4170-94b8-0a1d7f1690ce' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-20f14c8e-076b-42d1-b60a-5daf16774ea6' class='xr-var-data-in' type='checkbox'><label for='data-20f14c8e-076b-42d1-b60a-5daf16774ea6' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>deg C</dd><dt><span>desciption :</span></dt><dd>Gridded seawater temperature (1950-1980 climatology)</dd></dl></div><div class='xr-var-data'><pre>[168912 values with dtype=float64]</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-339d2d5f-deaa-4631-9e7c-c4866aa85377' class='xr-section-summary-in' type='checkbox'  ><label for='section-339d2d5f-deaa-4631-9e7c-c4866aa85377' class='xr-section-summary' >Indexes: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>month</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-0c900644-7600-4d8d-b6cf-f07b917622b0' class='xr-index-data-in' type='checkbox'/><label for='index-0c900644-7600-4d8d-b6cf-f07b917622b0' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], dtype=&#x27;int64&#x27;, name=&#x27;month&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>depth</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-8678ba94-52b9-477c-910e-455d4f46eba7' class='xr-index-data-in' type='checkbox'/><label for='index-8678ba94-52b9-477c-910e-455d4f46eba7' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([25.0, 85.0, 170.0, 290.0, 455.0, 670.0], dtype=&#x27;float64&#x27;, name=&#x27;depth&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>lat</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-079086e1-3979-44e5-9f89-173a7bdd952f' class='xr-index-data-in' type='checkbox'/><label for='index-079086e1-3979-44e5-9f89-173a7bdd952f' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([-35.0, -32.5, -30.0, -27.5, -25.0, -22.5, -20.0, -17.5, -15.0, -12.5,
        -10.0,  -7.5,  -5.0,  -2.5,   0.0,   2.5,   5.0,   7.5,  10.0,  12.5,
         15.0,  17.5,  20.0,  22.5,  25.0,  27.5,  30.0,  32.5,  35.0,  37.5,
         40.0,  42.5,  45.0,  47.5,  50.0,  52.5,  55.0,  57.5,  60.0,  62.5,
         65.0,  67.5,  70.0,  72.5,  75.0,  77.5],
-      dtype=&#x27;float64&#x27;, name=&#x27;lat&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>lon</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-56b15766-65f2-469b-914d-39292535ee4e' class='xr-index-data-in' type='checkbox'/><label for='index-56b15766-65f2-469b-914d-39292535ee4e' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([-90.0, -87.5, -85.0, -82.5, -80.0, -77.5, -75.0, -72.5, -70.0, -67.5,
+      dtype=&#x27;float64&#x27;, name=&#x27;lat&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>lon</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-eb0f50df-4497-46f2-85bd-662dae776772' class='xr-index-data-in' type='checkbox'/><label for='index-eb0f50df-4497-46f2-85bd-662dae776772' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([-90.0, -87.5, -85.0, -82.5, -80.0, -77.5, -75.0, -72.5, -70.0, -67.5,
        -65.0, -62.5, -60.0, -57.5, -55.0, -52.5, -50.0, -47.5, -45.0, -42.5,
        -40.0, -37.5, -35.0, -32.5, -30.0, -27.5, -25.0, -22.5, -20.0, -17.5,
        -15.0, -12.5, -10.0,  -7.5,  -5.0,  -2.5,   0.0,   2.5,   5.0,   7.5,
         10.0,  12.5,  15.0,  17.5,  20.0,  22.5,  25.0,  27.5,  30.0,  32.5,
         35.0],
-      dtype=&#x27;float64&#x27;, name=&#x27;lon&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-1a6610a2-6d0d-4e72-90aa-a3b7e9381a11' class='xr-section-summary-in' type='checkbox'  checked><label for='section-1a6610a2-6d0d-4e72-90aa-a3b7e9381a11' class='xr-section-summary' >Attributes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>description :</span></dt><dd>gridded climatology from Breitkruez et al., 2018 (https://doi.org/10.1029/2018JC014300)</dd><dt><span>regrid_method :</span></dt><dd>bilinear</dd></dl></div></li></ul></div></div></div></div>
+      dtype=&#x27;float64&#x27;, name=&#x27;lon&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-22ccd60d-630d-4ddf-9f11-6dd4649fb90b' class='xr-section-summary-in' type='checkbox'  checked><label for='section-22ccd60d-630d-4ddf-9f11-6dd4649fb90b' class='xr-section-summary' >Attributes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>description :</span></dt><dd>gridded climatology from Breitkruez et al., 2018 (https://doi.org/10.1029/2018JC014300)</dd><dt><span>regrid_method :</span></dt><dd>bilinear</dd></dl></div></li></ul></div></div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -948,7 +972,7 @@ Attributes:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x16e4160f0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x1578893a0&gt;
 </pre></div>
 </div>
 <img alt="_images/3ab25f85f65142d371aa843be9dcc7b7c1ff61bc235fde6765b6424e8fd03110.png" src="_images/3ab25f85f65142d371aa843be9dcc7b7c1ff61bc235fde6765b6424e8fd03110.png" />
@@ -967,7 +991,7 @@ Attributes:
 <span class="sd">    lat (float): latitude you want to sample (degrees north).</span>
 <span class="sd">    lon (float): longitude you want to sample (degrees east).</span>
 <span class="sd">    depth (float): water depth (m)</span>
-<span class="sd">    month (int): indexer for the month you wants (0=jan,1=feb, etc)</span>
+<span class="sd">    month (int): indexer for the month you wants (1=jan,2=feb, etc)</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">    data_i: an xarray dataset of d18Osw and T at the given location</span>
@@ -985,7 +1009,7 @@ Attributes:
 <span class="n">lat</span> <span class="o">=</span> <span class="mi">50</span> <span class="c1"># 50ºN</span>
 <span class="n">lon</span> <span class="o">=</span> <span class="o">-</span><span class="mi">20</span> <span class="c1"># 20ºW</span>
 <span class="n">depth</span> <span class="o">=</span> <span class="mi">100</span> <span class="c1"># depth of 100m</span>
-<span class="n">month</span> <span class="o">=</span> <span class="mi">6</span> <span class="c1"># month of july (remember, python uses zero-indexing)</span>
+<span class="n">month</span> <span class="o">=</span> <span class="mi">6</span> <span class="c1"># month of june</span>
 
 <span class="n">sample_data</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span><span class="n">depth</span><span class="p">,</span><span class="n">month</span><span class="p">)[</span><span class="s1">&#39;T&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
@@ -1005,26 +1029,152 @@ Attributes:
 <h2>Task 3: Foram ecology<a class="headerlink" href="#task-3-foram-ecology" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">foram_eco</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;data/plafom_foram_abundance.nc&#39;</span><span class="p">)</span>
-<span class="n">foram_eco</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">lon</span><span class="o">=-</span><span class="mi">20</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)[</span><span class="s1">&#39;GBulloides&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;month&#39;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span><span class="n">cbar_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="s1">&#39;G. bulloides abundance (nmol/m3)&#39;</span><span class="p">})</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Water Depth (m)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Month&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;example_Gbull_abundance.png&#39;</span><span class="p">,</span><span class="n">transparent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;G. bulloides abundance pattern at 50ºN, 20ºW&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### load the ecological mdoel data</span>
+<span class="n">foram_eco</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;data/plafom_foram_abundance.nc&#39;</span><span class="p">)</span> <span class="c1"># don&#39;t change this!</span>
+
+
+<span class="c1">### function</span>
+<span class="k">def</span> <span class="nf">find_preference</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span><span class="n">species</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function finds the depth and month at which the species abundance is highest in the ecological model.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    lat (float): latitude you want to sample (degrees north).</span>
+<span class="sd">    lon (float): longitude you want to sample (degrees east).</span>
+<span class="sd">    species (str): the species of interest, one of [&#39;GBulloides&#39;,&#39;GRuberW&#39;,&#39;NPachyderma] </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    depth_pref (int): the preferred depth</span>
+<span class="sd">    month_pref (str): the preferred month</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">species</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;GBulloides&#39;</span><span class="p">,</span><span class="s1">&#39;GRuberW&#39;</span><span class="p">,</span><span class="s1">&#39;NPachyderma&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="s1">&#39;Sorry, we dont have that species!&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">df_</span> <span class="o">=</span> <span class="n">foram_eco</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">lat</span><span class="p">,</span><span class="n">lon</span><span class="o">=</span><span class="n">lon</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)[</span><span class="n">species</span><span class="p">]</span>
+        <span class="n">month_pref</span> <span class="o">=</span> <span class="n">df_</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df_</span> <span class="o">==</span> <span class="n">df_</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">month</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">depth_pref</span> <span class="o">=</span> <span class="n">df_</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df_</span> <span class="o">==</span> <span class="n">df_</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">depth</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">depth_pref</span><span class="p">,</span> <span class="n">month_pref</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;G. bulloides abundance pattern at 50ºN, 20ºW&#39;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(5.0, &#39;Sep&#39;)
 </pre></div>
 </div>
-<img alt="_images/1e1b6e88fd0c2d62e0b45a51fd752eadc08b23565cd2f647fc49438189d0d007.png" src="_images/1e1b6e88fd0c2d62e0b45a51fd752eadc08b23565cd2f647fc49438189d0d007.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">foram_eco</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### run this cell to check your functions works properly</span>
+<span class="n">lat</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">lon</span> <span class="o">=</span> <span class="o">-</span><span class="mi">20</span>
+<span class="n">species</span> <span class="o">=</span> <span class="s1">&#39;GRuberW&#39;</span>
+
+<span class="n">find_preference</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span><span class="n">species</span><span class="p">)</span>
+
+<span class="c1">## the output should read (5 and &#39;Sep&#39;), meaning G Ruber White preferrentially lives at 5m depth during September</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(5.0, &#39;Sep&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="task-4-bringing-it-together">
+<h2>Task 4: Bringing it together!<a class="headerlink" href="#task-4-bringing-it-together" title="Link to this heading">#</a></h2>
+<p><em>note: you should include an option to use different d18O calcite equation coefficients…</em></p>
+<p>Let the user inut one of the “Names” from the table below. The function should then assign a value to a, b, and c, depending on the equation chosen.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>a</p></th>
+<th class="head"><p>b</p></th>
+<th class="head"><p>c</p></th>
+<th class="head"><p>ref</p></th>
+<th class="head"><p>method</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>KO97</p></td>
+<td><p>16.1</p></td>
+<td><p>4.64</p></td>
+<td><p>0.05</p></td>
+<td><p>Kim and O’Neil (1997)</p></td>
+<td><p>Inorganic calcite (lab)</p></td>
+</tr>
+<tr class="row-odd"><td><p>EL83</p></td>
+<td><p>17.0</p></td>
+<td><p>4.52</p></td>
+<td><p>0.03</p></td>
+<td><p>Erez and Luz (1983)</p></td>
+<td><p>Cultured forams</p></td>
+</tr>
+<tr class="row-even"><td><p>M02</p></td>
+<td><p>14.3</p></td>
+<td><p>4.34</p></td>
+<td><p>0.09</p></td>
+<td><p>Mulitza et al., 2002</p></td>
+<td><p>Field calibration</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## this function might help...</span>
+<span class="k">def</span> <span class="nf">monthToNum</span><span class="p">(</span><span class="n">shortMonth</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;convert month string to integer&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;Jan&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;Feb&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s1">&#39;Mar&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s1">&#39;Apr&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s1">&#39;May&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s1">&#39;Jun&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="s1">&#39;Jul&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+            <span class="s1">&#39;Aug&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="s1">&#39;Sep&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> 
+            <span class="s1">&#39;Oct&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s1">&#39;Nov&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+            <span class="s1">&#39;Dec&#39;</span><span class="p">:</span> <span class="mi">12</span>
+    <span class="p">}[</span><span class="n">shortMonth</span><span class="p">]</span>
+
+<span class="c1">### your code here:</span>
+<span class="k">def</span> <span class="nf">d18o_forward_model</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span><span class="n">species</span><span class="p">,</span><span class="n">calibration</span><span class="o">=</span><span class="s1">&#39;KO97&#39;</span><span class="p">):</span>
+
+    <span class="n">depth</span><span class="p">,</span> <span class="n">month</span> <span class="o">=</span> <span class="n">find_preference</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span><span class="n">species</span><span class="p">)</span>
+    <span class="n">month</span> <span class="o">=</span><span class="n">monthToNum</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+
+    <span class="n">data_i</span> <span class="o">=</span> <span class="n">sample_data</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span><span class="n">depth</span><span class="p">,</span><span class="n">month</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">calibration</span> <span class="o">==</span> <span class="s1">&#39;KO97&#39;</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mf">16.1</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="mf">4.64</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="mf">0.05</span>
+    <span class="k">elif</span> <span class="n">calibration</span> <span class="o">==</span> <span class="s1">&#39;EL83&#39;</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mf">17.0</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="mf">4.52</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="mf">0.03</span>
+    <span class="k">elif</span> <span class="n">calibration</span> <span class="o">==</span> <span class="s1">&#39;M02&#39;</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="mf">14.3</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="mf">4.34</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="mf">0.09</span>
+
+    <span class="n">d18o_predicted</span> <span class="o">=</span> <span class="n">equilibrium_calcite</span><span class="p">(</span><span class="n">data_i</span><span class="p">[</span><span class="s1">&#39;d18Osw&#39;</span><span class="p">],</span><span class="n">T</span><span class="o">=</span><span class="n">data_i</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">],</span><span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">d18o_predicted</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d18o_forward_model</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="s1">&#39;GRuberW&#39;</span><span class="p">,</span><span class="s1">&#39;KO97&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1392,60 +1542,53 @@ dl.xr-attrs {
   stroke: currentColor;
   fill: currentColor;
 }
-</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 10MB
-Dimensions:      (month: 12, depth: 30, lat: 46, lon: 51)
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray ()&gt; Size: 8B
+array(-0.04942717)
 Coordinates:
-  * month        (month) &lt;U3 144B &#x27;Feb&#x27; &#x27;Mar&#x27; &#x27;Apr&#x27; &#x27;May&#x27; ... &#x27;Nov&#x27; &#x27;Dec&#x27; &#x27;Jan&#x27;
-  * depth        (depth) float32 120B 5.0 15.0 25.0 35.0 ... 326.9 351.1 378.2
-  * lat          (lat) float64 368B -35.0 -32.5 -30.0 -27.5 ... 72.5 75.0 77.5
-  * lon          (lon) float64 408B -90.0 -87.5 -85.0 -82.5 ... 30.0 32.5 35.0
-Data variables:
-    GRuberW      (month, depth, lat, lon) float32 3MB ...
-    GBulloides   (month, depth, lat, lon) float32 3MB ...
-    NPachyderma  (month, depth, lat, lon) float32 3MB ...
-Attributes:
-    description:    Global monthly concentration of the cold-water planktonic...
-    regrid_method:  bilinear</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-49bdde9f-b72a-4ffb-855b-85936072fb90' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-49bdde9f-b72a-4ffb-855b-85936072fb90' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>month</span>: 12</li><li><span class='xr-has-index'>depth</span>: 30</li><li><span class='xr-has-index'>lat</span>: 46</li><li><span class='xr-has-index'>lon</span>: 51</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-e00cd206-286c-4939-82c5-02b6c4c22b90' class='xr-section-summary-in' type='checkbox'  checked><label for='section-e00cd206-286c-4939-82c5-02b6c4c22b90' class='xr-section-summary' >Coordinates: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>month</span></div><div class='xr-var-dims'>(month)</div><div class='xr-var-dtype'>&lt;U3</div><div class='xr-var-preview xr-preview'>&#x27;Feb&#x27; &#x27;Mar&#x27; &#x27;Apr&#x27; ... &#x27;Dec&#x27; &#x27;Jan&#x27;</div><input id='attrs-6f1463da-3ffc-4aca-9d8a-51a48fb1a9d4' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-6f1463da-3ffc-4aca-9d8a-51a48fb1a9d4' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-81220731-047b-4e79-9fe7-c053f8e7fed1' class='xr-var-data-in' type='checkbox'><label for='data-81220731-047b-4e79-9fe7-c053f8e7fed1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([&#x27;Feb&#x27;, &#x27;Mar&#x27;, &#x27;Apr&#x27;, &#x27;May&#x27;, &#x27;Jun&#x27;, &#x27;Jul&#x27;, &#x27;Aug&#x27;, &#x27;Sep&#x27;, &#x27;Oct&#x27;, &#x27;Nov&#x27;,
-       &#x27;Dec&#x27;, &#x27;Jan&#x27;], dtype=&#x27;&lt;U3&#x27;)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>depth</span></div><div class='xr-var-dims'>(depth)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>5.0 15.0 25.0 ... 326.9 351.1 378.2</div><input id='attrs-f8041ee6-f79c-48ad-9336-dac80db175c2' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-f8041ee6-f79c-48ad-9336-dac80db175c2' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-8007eec9-b3f9-447e-8854-64220f930efa' class='xr-var-data-in' type='checkbox'><label for='data-8007eec9-b3f9-447e-8854-64220f930efa' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([  5.     ,  15.     ,  25.     ,  35.     ,  45.     ,  55.     ,
-        65.     ,  75.     ,  85.     ,  95.     , 105.     , 115.     ,
-       125.     , 135.     , 145.     , 155.     , 165.0984 , 175.47905,
-       186.29128, 197.66028, 209.71138, 222.57828, 236.40883, 251.37016,
-       267.6542 , 285.48364, 305.11923, 326.86798, 351.09348, 378.22763],
-      dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>lat</span></div><div class='xr-var-dims'>(lat)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-35.0 -32.5 -30.0 ... 75.0 77.5</div><input id='attrs-f7f57420-ffe5-4f36-9e79-84b08f9dcb9c' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-f7f57420-ffe5-4f36-9e79-84b08f9dcb9c' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-53f05e44-a379-4517-9080-e7abc0ddb081' class='xr-var-data-in' type='checkbox'><label for='data-53f05e44-a379-4517-9080-e7abc0ddb081' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_north</dd></dl></div><div class='xr-var-data'><pre>array([-35. , -32.5, -30. , -27.5, -25. , -22.5, -20. , -17.5, -15. , -12.5,
-       -10. ,  -7.5,  -5. ,  -2.5,   0. ,   2.5,   5. ,   7.5,  10. ,  12.5,
-        15. ,  17.5,  20. ,  22.5,  25. ,  27.5,  30. ,  32.5,  35. ,  37.5,
-        40. ,  42.5,  45. ,  47.5,  50. ,  52.5,  55. ,  57.5,  60. ,  62.5,
-        65. ,  67.5,  70. ,  72.5,  75. ,  77.5])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>lon</span></div><div class='xr-var-dims'>(lon)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-90.0 -87.5 -85.0 ... 32.5 35.0</div><input id='attrs-37960df0-5478-4979-b976-c63bb2578964' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-37960df0-5478-4979-b976-c63bb2578964' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d5d58a61-7569-4241-9f2f-9e90a88961ba' class='xr-var-data-in' type='checkbox'><label for='data-d5d58a61-7569-4241-9f2f-9e90a88961ba' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_east</dd></dl></div><div class='xr-var-data'><pre>array([-90. , -87.5, -85. , -82.5, -80. , -77.5, -75. , -72.5, -70. , -67.5,
-       -65. , -62.5, -60. , -57.5, -55. , -52.5, -50. , -47.5, -45. , -42.5,
-       -40. , -37.5, -35. , -32.5, -30. , -27.5, -25. , -22.5, -20. , -17.5,
-       -15. , -12.5, -10. ,  -7.5,  -5. ,  -2.5,   0. ,   2.5,   5. ,   7.5,
-        10. ,  12.5,  15. ,  17.5,  20. ,  22.5,  25. ,  27.5,  30. ,  32.5,
-        35. ])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-642d812e-7147-4fec-abfe-ccf07cae6e1f' class='xr-section-summary-in' type='checkbox'  checked><label for='section-642d812e-7147-4fec-abfe-ccf07cae6e1f' class='xr-section-summary' >Data variables: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>GRuberW</span></div><div class='xr-var-dims'>(month, depth, lat, lon)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-c940ff38-0fc2-4812-a668-baf16abba16a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-c940ff38-0fc2-4812-a668-baf16abba16a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-003e2f3c-f0c0-4c34-96cf-345c1bcc2941' class='xr-var-data-in' type='checkbox'><label for='data-003e2f3c-f0c0-4c34-96cf-345c1bcc2941' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>description :</span></dt><dd>Monthly concentration of G. ruber white</dd><dt><span>units :</span></dt><dd>mmol C/m3</dd></dl></div><div class='xr-var-data'><pre>[844560 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>GBulloides</span></div><div class='xr-var-dims'>(month, depth, lat, lon)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-a7e76cd8-6b51-4f58-9277-44ff660e3e95' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-a7e76cd8-6b51-4f58-9277-44ff660e3e95' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1c242e59-8dbb-439e-930d-7d87cfb62215' class='xr-var-data-in' type='checkbox'><label for='data-1c242e59-8dbb-439e-930d-7d87cfb62215' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>description :</span></dt><dd>Monthly concentration of G. bulloides</dd><dt><span>units :</span></dt><dd>mmol C/m3</dd></dl></div><div class='xr-var-data'><pre>[844560 values with dtype=float32]</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>NPachyderma</span></div><div class='xr-var-dims'>(month, depth, lat, lon)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-13ac5d9a-8ae6-4069-bedd-079cdefa24fe' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-13ac5d9a-8ae6-4069-bedd-079cdefa24fe' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-fd573ff2-6b3a-4a4b-b854-f8a94b006ed1' class='xr-var-data-in' type='checkbox'><label for='data-fd573ff2-6b3a-4a4b-b854-f8a94b006ed1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>description :</span></dt><dd>Monthly concentration of N. pachyderma</dd><dt><span>units :</span></dt><dd>mmol C/m3</dd></dl></div><div class='xr-var-data'><pre>[844560 values with dtype=float32]</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-05def6ad-11f8-4403-9e59-aff375526b48' class='xr-section-summary-in' type='checkbox'  ><label for='section-05def6ad-11f8-4403-9e59-aff375526b48' class='xr-section-summary' >Indexes: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>month</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-ea43a85f-977c-4612-828f-7718632b9cbf' class='xr-index-data-in' type='checkbox'/><label for='index-ea43a85f-977c-4612-828f-7718632b9cbf' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([&#x27;Feb&#x27;, &#x27;Mar&#x27;, &#x27;Apr&#x27;, &#x27;May&#x27;, &#x27;Jun&#x27;, &#x27;Jul&#x27;, &#x27;Aug&#x27;, &#x27;Sep&#x27;, &#x27;Oct&#x27;, &#x27;Nov&#x27;,
-       &#x27;Dec&#x27;, &#x27;Jan&#x27;],
-      dtype=&#x27;object&#x27;, name=&#x27;month&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>depth</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-2b4349dc-886f-4f70-85e7-a1ce86fde4c0' class='xr-index-data-in' type='checkbox'/><label for='index-2b4349dc-886f-4f70-85e7-a1ce86fde4c0' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([               5.0,               15.0,               25.0,
-                     35.0,               45.0,               55.0,
-                     65.0,               75.0,               85.0,
-                     95.0,              105.0,              115.0,
-                    125.0,              135.0,              145.0,
-                    155.0, 165.09840393066406,  175.4790496826172,
-       186.29127502441406,  197.6602783203125,  209.7113800048828,
-       222.57827758789062, 236.40882873535156,  251.3701629638672,
-        267.6542053222656,   285.483642578125,  305.1192321777344,
-       326.86798095703125,  351.0934753417969,  378.2276306152344],
-      dtype=&#x27;float32&#x27;, name=&#x27;depth&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>lat</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-4bc80518-accd-404a-9d45-0736887fe529' class='xr-index-data-in' type='checkbox'/><label for='index-4bc80518-accd-404a-9d45-0736887fe529' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([-35.0, -32.5, -30.0, -27.5, -25.0, -22.5, -20.0, -17.5, -15.0, -12.5,
-       -10.0,  -7.5,  -5.0,  -2.5,   0.0,   2.5,   5.0,   7.5,  10.0,  12.5,
-        15.0,  17.5,  20.0,  22.5,  25.0,  27.5,  30.0,  32.5,  35.0,  37.5,
-        40.0,  42.5,  45.0,  47.5,  50.0,  52.5,  55.0,  57.5,  60.0,  62.5,
-        65.0,  67.5,  70.0,  72.5,  75.0,  77.5],
-      dtype=&#x27;float64&#x27;, name=&#x27;lat&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>lon</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-b7845a12-26e0-4407-bda3-0808843f973b' class='xr-index-data-in' type='checkbox'/><label for='index-b7845a12-26e0-4407-bda3-0808843f973b' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([-90.0, -87.5, -85.0, -82.5, -80.0, -77.5, -75.0, -72.5, -70.0, -67.5,
-       -65.0, -62.5, -60.0, -57.5, -55.0, -52.5, -50.0, -47.5, -45.0, -42.5,
-       -40.0, -37.5, -35.0, -32.5, -30.0, -27.5, -25.0, -22.5, -20.0, -17.5,
-       -15.0, -12.5, -10.0,  -7.5,  -5.0,  -2.5,   0.0,   2.5,   5.0,   7.5,
-        10.0,  12.5,  15.0,  17.5,  20.0,  22.5,  25.0,  27.5,  30.0,  32.5,
-        35.0],
-      dtype=&#x27;float64&#x27;, name=&#x27;lon&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-1997f17b-920f-4345-85eb-db99590a79bb' class='xr-section-summary-in' type='checkbox'  checked><label for='section-1997f17b-920f-4345-85eb-db99590a79bb' class='xr-section-summary' >Attributes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>description :</span></dt><dd>Global monthly concentration of the cold-water planktonic foraminifera species from Kretschmer et al., 2018 ( https://doi.org/10.5194/bg-15-4405-2018)</dd><dt><span>regrid_method :</span></dt><dd>bilinear</dd></dl></div></li></ul></div></div></div></div>
+    month    int64 8B 9
+    depth    float64 8B 25.0
+    lat      float64 8B 50.0
+    lon      float64 8B -20.0</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'></div></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-17e11b6f-41f7-44f0-b342-dc0c215bb785' class='xr-array-in' type='checkbox' checked><label for='section-17e11b6f-41f7-44f0-b342-dc0c215bb785' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>-0.04943</span></div><div class='xr-array-data'><pre>array(-0.04942717)</pre></div></div></li><li class='xr-section-item'><input id='section-2c5ba260-1373-40d5-ae67-2fd4ad52d137' class='xr-section-summary-in' type='checkbox'  checked><label for='section-2c5ba260-1373-40d5-ae67-2fd4ad52d137' class='xr-section-summary' >Coordinates: <span>(4)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>month</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>9</div><input id='attrs-7d7aba76-d325-4934-9580-83821d58a41a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-7d7aba76-d325-4934-9580-83821d58a41a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-a8fcb47f-6113-4de8-80ff-820f041e4a95' class='xr-var-data-in' type='checkbox'><label for='data-a8fcb47f-6113-4de8-80ff-820f041e4a95' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(9)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>depth</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>25.0</div><input id='attrs-597e1bed-49d8-46a0-b738-90bad94a8333' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-597e1bed-49d8-46a0-b738-90bad94a8333' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1eddd003-212a-4adb-976f-f6e10604b656' class='xr-var-data-in' type='checkbox'><label for='data-1eddd003-212a-4adb-976f-f6e10604b656' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array(25.)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>lat</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>50.0</div><input id='attrs-a941c710-1415-4578-b30f-3206da39205a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-a941c710-1415-4578-b30f-3206da39205a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7591ac9b-48f1-4e91-a72f-7a74a656a5c2' class='xr-var-data-in' type='checkbox'><label for='data-7591ac9b-48f1-4e91-a72f-7a74a656a5c2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_north</dd></dl></div><div class='xr-var-data'><pre>array(50.)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>lon</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-20.0</div><input id='attrs-6c14da97-a317-4fd8-a81b-eb53bcf3e884' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-6c14da97-a317-4fd8-a81b-eb53bcf3e884' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-81d4df38-b383-4f82-8b45-7294500d9739' class='xr-var-data-in' type='checkbox'><label for='data-81d4df38-b383-4f82-8b45-7294500d9739' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>degrees_east</dd></dl></div><div class='xr-var-data'><pre>array(-20.)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-30475c8b-3461-458b-80e3-162596fff3b2' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-30475c8b-3461-458b-80e3-162596fff3b2' class='xr-section-summary'  title='Expand/collapse section'>Indexes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'></ul></div></li><li class='xr-section-item'><input id='section-5f1e6fd7-40ac-460d-b506-9020be881919' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-5f1e6fd7-40ac-460d-b506-9020be881919' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
 </div>
-<p>foram_eco</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span> <span class="o">=</span> <span class="n">ocean_data</span><span class="o">.</span><span class="n">lat</span>
+<span class="n">lon</span> <span class="o">=</span> <span class="n">ocean_data</span><span class="o">.</span><span class="n">lon</span>
+
+<span class="c1">## plot predicted calcite d18O</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">14</span><span class="p">))</span>
+<span class="n">mapproj</span>  <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">Orthographic</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=-</span><span class="mi">20</span><span class="p">,</span><span class="n">central_latitude</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">levels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mf">4.2</span><span class="p">,</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">311</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="n">mapproj</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">LAND</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">d18o_forward_model</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span><span class="s1">&#39;GRuberW&#39;</span><span class="p">,</span><span class="s1">&#39;KO97&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span><span class="n">cbar_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;shrink&#39;</span><span class="p">:</span><span class="mf">0.8</span><span class="p">,</span><span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="s1">&#39;predicted d18Ocalcite (‰)&#39;</span><span class="p">})</span>
+<span class="n">gl</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">x_inline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">y_inline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;G. ruber white&#39;</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">312</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="n">mapproj</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">LAND</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">d18o_forward_model</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span><span class="s1">&#39;GBulloides&#39;</span><span class="p">,</span><span class="s1">&#39;KO97&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span><span class="n">cbar_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;shrink&#39;</span><span class="p">:</span><span class="mf">0.8</span><span class="p">,</span><span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="s1">&#39;predicted d18Ocalcite (‰)&#39;</span><span class="p">})</span>
+<span class="n">gl</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">x_inline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">y_inline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;G. bulloides&#39;</span><span class="p">)</span>
+
+<span class="n">ax3</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">313</span><span class="p">,</span><span class="n">projection</span><span class="o">=</span><span class="n">mapproj</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">LAND</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">d18o_forward_model</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span><span class="s1">&#39;NPachyderma&#39;</span><span class="p">,</span><span class="s1">&#39;KO97&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax3</span><span class="p">,</span><span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span><span class="n">cbar_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;shrink&#39;</span><span class="p">:</span><span class="mf">0.8</span><span class="p">,</span><span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="s1">&#39;predicted d18Ocalcite (‰)&#39;</span><span class="p">})</span>
+<span class="n">gl</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">x_inline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">y_inline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;N. pachyderma&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;N. pachyderma&#39;)
+</pre></div>
+</div>
+<img alt="_images/3ab444aa7c71d66a4bea036e148e9fc556c57eb9f36c727daae7bbf9f4a90a5f.png" src="_images/3ab444aa7c71d66a4bea036e148e9fc556c57eb9f36c727daae7bbf9f4a90a5f.png" />
+</div>
+</div>
 </section>
 </section>
 
@@ -1508,6 +1651,7 @@ Attributes:
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-2-1-load-datasets">Task 2.1: Load datasets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-2-2-write-a-function-that-samples-the-coean-data-at-a-given-latitude-and-longitude">Task 2.2: write a function that samples the coean data at a given latitude and longitude</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-3-foram-ecology">Task 3: Foram ecology</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task-4-bringing-it-together">Task 4: Bringing it together!</a></li>
 </ul>
   </nav></div>
 
